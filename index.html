@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Way2English — A2-04 Will / Future Tense</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#4361ee; --violet:#7c3aed; --teal:#0d9488;
+  --green:#16a34a; --red:#dc2626;
+  --bg:#f8fafc; --card:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+  --shadow:0 4px 24px rgba(67,97,238,.10); --radius:16px;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text);
+  padding-bottom:90px;
+}
+.hero{
+  background:linear-gradient(135deg,#1e3a8a 0%,#4361ee 55%,#7c3aed 100%);
+  color:#fff; padding:32px 20px 28px; text-align:center;
+}
+.hero h1{ margin:0 0 6px; font-size:24px; font-weight:800; }
+.hero p{ margin:0; opacity:.9; font-size:14px; }
+
+.stepper{
+  display:flex; overflow-x:auto; gap:8px; padding:14px 12px; background:#fff;
+  border-bottom:1px solid var(--border); position:sticky; top:0; z-index:50;
+  -webkit-overflow-scrolling:touch;
+}
+.step-btn{
+  flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:4px;
+  background:var(--bg); border:1px solid var(--border); border-radius:12px;
+  padding:8px 12px; cursor:pointer; font-family:inherit; font-size:11px; color:var(--muted);
+  font-weight:600; min-width:64px; transition:.2s;
+}
+.step-btn .ic{ font-size:18px; }
+.step-btn.active{ background:var(--blue); color:#fff; border-color:var(--blue); }
+.step-btn.done{ background:#dcfce7; border-color:var(--green); color:var(--green); }
+.step-btn.done.active{ background:var(--green); color:#fff; }
+
+.container{ max-width:760px; margin:0 auto; padding:18px 14px; }
+.step-panel{ display:none; }
+.step-panel.active{ display:block; animation:fadeUp .35s ease both; }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:none;} }
+
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:18px; margin-bottom:16px;
+}
+.card h2{ margin:0 0 12px; font-size:18px; font-weight:800; }
+.card h3{ margin:0 0 10px; font-size:15px; font-weight:700; color:var(--violet); }
+
+.nav-row{ display:flex; justify-content:space-between; gap:10px; margin-top:8px; }
+.nav-btn{
+  flex:1; padding:12px; border-radius:12px; border:none; font-weight:700; font-size:14px;
+  cursor:pointer; font-family:inherit; background:var(--blue); color:#fff;
+}
+.nav-btn.secondary{ background:var(--bg); color:var(--text); border:1px solid var(--border); }
+
+.vimeo-wrap{ position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden; margin-bottom:16px; }
+.vimeo-wrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+.conv-list{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.conv-list div{
+  background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px;
+  font-size:13px; font-weight:600;
+}
+
+.vocab-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.vocab-item{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px;
+}
+.vocab-word{ font-weight:700; font-size:14px; flex:1; }
+.vocab-ua{ font-size:12px; color:var(--muted); margin-top:3px; font-weight:500; }
+.speak-btn{
+  background:var(--blue); color:#fff; border:none; border-radius:8px; width:34px; height:34px;
+  font-size:16px; cursor:pointer; flex:0 0 auto;
+}
+.listen-all-btn{
+  display:block; width:100%; padding:12px; border-radius:12px; border:none;
+  background:var(--violet); color:#fff; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;
+  margin-bottom:6px;
+}
+
+.conv-img{ display:block; width:100%; border-radius:12px; margin-bottom:12px; }
+audio{ display:block; width:100%; margin-bottom:16px; }
+
+.quiz-q{ margin-bottom:16px; }
+.quiz-q p{ font-weight:700; margin:0 0 8px; font-size:14px; }
+.quiz-opt{
+  display:block; width:100%; text-align:left; padding:10px 14px; margin-bottom:6px;
+  border:1px solid var(--border); border-radius:10px; background:#fff; cursor:pointer;
+  font-family:inherit; font-size:13px; color:var(--text); transition:.15s;
+}
+.quiz-opt:hover:not(:disabled){ border-color:var(--blue); }
+.quiz-opt.correct{ background:#dcfce7; border-color:var(--green); color:#166534; font-weight:700; }
+.quiz-opt.wrong{ background:#fee2e2; border-color:var(--red); color:#991b1b; }
+.quiz-opt:disabled{ cursor:default; }
+.quiz-result{ margin-top:8px; padding:10px 14px; border-radius:10px; font-weight:800; font-size:14px; text-align:center; }
+.quiz-result.pass{ background:#dcfce7; color:#166534; }
+.quiz-result.fail{ background:#fef9c3; color:#854d0e; }
+
+.pzl-line{ font-size:14px; line-height:2.4; margin-bottom:6px; }
+.pzl-sel{
+  font-family:inherit; font-size:13px; padding:4px 8px; border-radius:8px; border:1px solid var(--border);
+  background:#fff; color:var(--text); margin:0 3px;
+}
+.pzl-sel.correct{ border-color:var(--green); background:#dcfce7; color:#166534; font-weight:700; }
+.pzl-sel.wrong{ border-color:var(--red); background:#fee2e2; color:#991b1b; }
+.pzl-audio-label{ font-size:12px; color:var(--muted); font-style:italic; margin:14px 0 6px; }
+.check-btn{
+  padding:10px 18px; border-radius:10px; border:none; background:var(--teal); color:#fff;
+  font-weight:700; font-size:14px; cursor:pointer; font-family:inherit; margin-top:6px;
+}
+.pzl-score{ margin-top:8px; font-weight:800; font-size:14px; color:var(--violet); }
+
+.car-slide{ display:none; }
+.car-slide.active{ display:block; animation:fadeUp .3s ease both; }
+.reading-conv{ font-size:15px; line-height:2; }
+.reading-speaker{ font-weight:800; color:var(--blue); }
+.reading-line{ margin-bottom:4px; }
+.hint-box{
+  background:#eef2ff; border:1px dashed var(--blue); border-radius:10px; padding:10px 14px;
+  font-size:13px; color:var(--blue); font-weight:600; margin-bottom:14px; text-align:center;
+}
+.car-nav{ display:flex; align-items:center; justify-content:space-between; margin-top:14px; }
+.car-nav button{
+  padding:10px 16px; border-radius:10px; border:1px solid var(--border); background:#fff;
+  font-weight:700; font-size:13px; cursor:pointer; font-family:inherit;
+}
+.car-nav button:disabled{ opacity:.4; cursor:default; }
+.car-counter{ font-weight:800; color:var(--muted); font-size:13px; }
+
+.fc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.fc-card{ position:relative; height:130px; cursor:pointer; perspective:1000px; }
+.fc-inner{ position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d; }
+.fc-card.flipped .fc-inner{ transform:rotateY(180deg); }
+.fc-front,.fc-back{
+  position:absolute; inset:0; border-radius:12px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; padding:10px; backface-visibility:hidden;
+  font-size:13px; font-weight:700;
+}
+.fc-front{ background:linear-gradient(135deg,#1e3a8a,#4361ee,#7c3aed); color:#fff; }
+.fc-front .hint{ font-size:11px; font-weight:500; opacity:.85; margin-top:6px; }
+.fc-back{ background:#fff; border:1px solid var(--border); color:var(--text); transform:rotateY(180deg); }
+.flip-all-btn{
+  display:block; width:100%; padding:12px; border-radius:12px; border:none;
+  background:var(--blue); color:#fff; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;
+  margin-bottom:14px;
+}
+
+.sp-line{ font-size:14px; line-height:2; margin-bottom:6px; }
+.sp-role{ font-weight:800; color:var(--violet); margin-right:6px; }
+.sp-blank{ display:inline-block; width:260px; border-bottom:2px dashed var(--violet); color:var(--muted); font-size:13px; font-style:italic; }
+.sp-interview-note{ font-size:12px; color:var(--muted); font-style:italic; text-align:center; margin-bottom:16px; }
+
+.results-fab{
+  position:fixed; bottom:18px; right:18px; background:var(--violet); color:#fff; border:none;
+  border-radius:30px; padding:14px 18px; font-weight:800; font-size:14px; cursor:pointer;
+  box-shadow:0 6px 20px rgba(124,58,237,.4); z-index:100; font-family:inherit;
+}
+.modal-overlay{
+  display:none; position:fixed; inset:0; background:rgba(15,23,42,.55); z-index:200;
+  align-items:center; justify-content:center; padding:16px;
+}
+.modal-overlay.open{ display:flex; }
+.modal-box{
+  background:#fff; border-radius:16px; padding:22px; max-width:420px; width:100%;
+  max-height:85vh; overflow-y:auto;
+}
+.modal-box h2{ margin-top:0; }
+.modal-box table{ width:100%; border-collapse:collapse; font-size:14px; margin-bottom:12px; }
+.modal-box td{ padding:6px 4px; border-bottom:1px solid var(--border); }
+.modal-total{ text-align:center; font-size:20px; font-weight:800; margin:10px 0 14px; }
+.modal-box textarea{
+  width:100%; height:160px; font-family:'JetBrains Mono',monospace; font-size:12px;
+  border:1px solid var(--border); border-radius:10px; padding:10px; resize:vertical;
+}
+.modal-close{
+  margin-top:12px; width:100%; padding:12px; border-radius:10px; border:none;
+  background:var(--bg); border:1px solid var(--border); font-weight:700; cursor:pointer; font-family:inherit;
+}
+.copy-btn{
+  margin-top:8px; width:100%; padding:12px; border-radius:10px; border:none;
+  background:var(--teal); color:#fff; font-weight:700; cursor:pointer; font-family:inherit;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Way2English — A2-04</h1>
+  <p>Will / Future Tense — майбутній час</p>
+</div>
+
+<div class="stepper" id="stepper"></div>
+
+<div class="container">
+
+  <!-- STEP 0: WATCH -->
+  <div class="step-panel active" id="panel-0">
+    <div class="card">
+      <h2>🎬 Watch</h2>
+      <div class="vimeo-wrap">
+        <iframe src="https://player.vimeo.com/video/950450472" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <h3>У цьому відео 4 розмови:</h3>
+      <div class="conv-list">
+        <div>1️⃣ Заняття (Class)</div>
+        <div>2️⃣ Пікнік (Picnic)</div>
+        <div>3️⃣ Літо (Summer)</div>
+        <div>4️⃣ Гра (Game)</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="goStep(1)">Далі →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: СЛОВА -->
+  <div class="step-panel" id="panel-1">
+    <div class="card">
+      <h2>📚 Слова</h2>
+      <button class="listen-all-btn" onclick="listenAll()">🔊 Послухати всі слова</button>
+      <div class="vocab-grid" id="vocabGrid"></div>
+      <div class="nav-row">
+        <button class="nav-btn secondary" onclick="goStep(0)">← Назад</button>
+        <button class="nav-btn" onclick="goStep(2)">Далі →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEPS 2-5: CONVERSATIONS (generated by JS) -->
+  <div class="step-panel" id="panel-2"></div>
+  <div class="step-panel" id="panel-3"></div>
+  <div class="step-panel" id="panel-4"></div>
+  <div class="step-panel" id="panel-5"></div>
+
+  <!-- STEP 6: ПАЗЛ -->
+  <div class="step-panel" id="panel-6">
+    <div class="card">
+      <h2>🧩 Пазл</h2>
+      <p style="font-size:13px;color:var(--muted);margin-top:-4px;">Обери правильне слово з випадаючого списку для кожної розмови.</p>
+    </div>
+    <div id="puzzleContainer"></div>
+    <div class="card">
+      <div class="nav-row">
+        <button class="nav-btn secondary" onclick="goStep(5)">← Назад</button>
+        <button class="nav-btn" onclick="goStep(7)">Далі →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7: ЧИТАННЯ -->
+  <div class="step-panel" id="panel-7">
+    <div class="card">
+      <h2>📖 Читання</h2>
+      <div class="hint-box">🇺🇦 Прочитай репліку англійською та переклади усно</div>
+      <div id="readingSlides"></div>
+      <div class="car-nav">
+        <button id="rprev" onclick="carNav('r',-1)" disabled>← Назад</button>
+        <span class="car-counter" id="rcounter">1 / 4</span>
+        <button id="rnext" onclick="carNav('r',1)">Далі →</button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn secondary" onclick="goStep(6)">← Крок 6</button>
+        <button class="nav-btn" onclick="goStep(8)">Крок 9 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 8: КАРТКИ -->
+  <div class="step-panel" id="panel-8">
+    <div class="card">
+      <h2>🃏 Картки</h2>
+      <button class="flip-all-btn" onclick="flipAll()">🔄 Перевернути всі</button>
+      <div class="fc-grid" id="fcGrid"></div>
+      <div class="nav-row" style="margin-top:14px;">
+        <button class="nav-btn secondary" onclick="goStep(7)">← Назад</button>
+        <button class="nav-btn" onclick="goStep(9)">Далі →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 9: ГОВОРИМО -->
+  <div class="step-panel" id="panel-9">
+    <div class="card">
+      <h2>🗣️ Говоримо</h2>
+      <div id="speakingSlides"></div>
+      <div class="car-nav">
+        <button id="spprev" onclick="carNav('sp',-1)" disabled>← Назад</button>
+        <span class="car-counter" id="spcounter">1 / 4</span>
+        <button id="spnext" onclick="carNav('sp',1)">Далі →</button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn secondary" onclick="goStep(8)">← Назад</button>
+        <button class="nav-btn" onclick="openResults()">📊 Подивитись результати</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FAB -->
+<button class="results-fab" onclick="openResults()">📊 Результати <span id="fabScore">0/0</span></button>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="resultsModal">
+  <div class="modal-box">
+    <h2>📊 Результати</h2>
+    <table><tbody id="resultsBody"></tbody></table>
+    <div class="modal-total" id="resultsTotal"></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:4px;">Скопіюй звіт та надішли вчителю:</p>
+    <textarea id="resultsText" readonly></textarea>
+    <button class="copy-btn" onclick="copyResults()">📋 Скопіювати звіт</button>
+    <button class="modal-close" onclick="closeResults()">Закрити</button>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+
+const VOCAB = [
+  { en: 'French', ua: 'французька мова' },
+  { en: 'take the course', ua: 'записатися на курс' },
+  { en: 'surprised', ua: 'здивований(а)' },
+  { en: 'same', ua: 'той самий, однаковий' },
+  { en: 'at the same time', ua: 'в той самий час' },
+  { en: 'on my own', ua: 'самостійно' },
+  { en: 'spirit', ua: 'дух, настрій' },
+  { en: 'until', ua: 'до (певного часу)' },
+  { en: "I'll try to make it.", ua: 'Я спробую встигнути / прийти.' },
+  { en: 'break', ua: 'перерва, відпустка' },
+  { en: 'beach', ua: 'пляж' },
+  { en: 'Nice choice.', ua: 'Гарний вибір.' },
+  { en: 'everyone else', ua: 'всі інші' },
+  { en: 'soccer field', ua: 'футбольне поле' },
+  { en: "Don't get too confident!", ua: 'Не будь надто самовпевненим!' },
+  { en: 'Especially', ua: 'Особливо' },
+];
+
+const CONVS = [
+  {
+    title: 'Conversation 1 — Class',
+    img: 'A2-04-1-Will-Class.jpg',
+    audio: 'A2-04-1-Will-Class.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-1-Will-Class.mp3',
+    text: [
+      { role: 'Man', line: 'How is your French class?' },
+      { role: 'Woman', line: 'Good, but it will finish next week.' },
+      { role: 'Man', line: 'Oh, will you take the next course?' },
+      { role: 'Woman', line: "No, I can't. I won't have time." },
+      { role: 'Man', line: "I'm surprised to hear that. You love that class." },
+      { role: 'Woman', line: 'I do, but I will start a new job next week. The class and my job will be at the same time.' },
+      { role: 'Man', line: "That's too bad!" },
+      { role: 'Woman', line: "It's OK. I will still study on my own." },
+      { role: 'Man', line: "That's the spirit!" },
+    ],
+    questions: [
+      { q: 'When will the French class finish?', opts: ['this week', 'next week', 'next month', 'never'], ans: 1 },
+      { q: 'Why will the woman not take the next course?', opts: ["She doesn't like it", "She won't have time", 'It costs too much', 'It is canceled'], ans: 1 },
+      { q: 'What will the woman do instead?', opts: ['quit learning French', 'study on her own', 'take an easier course', 'ask for a refund'], ans: 1 },
+    ]
+  },
+  {
+    title: 'Conversation 2 — Picnic',
+    img: 'A2-04-2-Will-Picnic.jpg',
+    audio: 'A2-04-2-Will-Picnic.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-2-Will-Picnic.mp3',
+    text: [
+      { role: 'Man', line: 'The company picnic is the 18th. Will you be there?' },
+      { role: 'Woman', line: "Yes, I think I'll go. What time does it start?" },
+      { role: 'Man', line: 'It will begin at 12 and will go until 5.' },
+      { role: 'Woman', line: "OK, I'll try to make it. Will your wife be there?" },
+      { role: 'Man', line: "No, she won't be there this year. She has to work." },
+      { role: 'Woman', line: "Oh, that's too bad. My husband won't come, either. He's out of town." },
+      { role: 'Man', line: 'So, will you come alone?' },
+      { role: 'Woman', line: 'No, I will bring my kids. They love the free food.' },
+      { role: 'Man', line: 'My kids too. I am sure they will eat a lot!' },
+      { role: 'Woman', line: 'Mine, too.' },
+    ],
+    questions: [
+      { q: 'What date is the company picnic?', opts: ['the 8th', 'the 18th', 'the 28th', 'next Monday'], ans: 1 },
+      { q: "Why won't the man's wife be there?", opts: ['she is sick', 'she has to work', 'she is out of town', "she doesn't like picnics"], ans: 1 },
+      { q: 'Who will the woman bring?', opts: ['her husband', 'her kids', 'nobody', 'her coworkers'], ans: 1 },
+    ]
+  },
+  {
+    title: 'Conversation 3 — Summer',
+    img: 'A2-04-3-Will-Summer.jpg',
+    audio: 'A2-04-3-Will-Summer.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-3-Will-Summer.mp3',
+    text: [
+      { role: 'Man', line: 'Where will you go for the summer break?' },
+      { role: 'Woman', line: 'I will go to the beach with my family.' },
+      { role: 'Man', line: 'That sounds fun. How long will you be there?' },
+      { role: 'Woman', line: "We won't stay long, maybe two or three days." },
+      { role: 'Man', line: 'Nice. Where will you stay?' },
+      { role: 'Woman', line: 'We will stay at the new hotel. It just opened!' },
+      { role: 'Man', line: "Nice choice. I hear it's really beautiful." },
+    ],
+    questions: [
+      { q: 'Where will the woman go for summer break?', opts: ['the mountains', 'the beach', 'another country', 'nowhere'], ans: 1 },
+      { q: 'How long will they stay?', opts: ['a week', 'two or three days', 'a month', 'one day'], ans: 1 },
+      { q: 'Where will they stay?', opts: ["at a friend's house", 'at a campsite', 'at the new hotel', 'at their relatives'], ans: 2 },
+    ]
+  },
+  {
+    title: 'Conversation 4 — Game',
+    img: 'A2-04-4-Will-Game.jpg',
+    audio: 'A2-04-4-Will-Game.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-4-Will-Game.mp3',
+    text: [
+      { role: 'Man', line: "When's our next soccer game?" },
+      { role: 'Woman', line: "It's next Tuesday." },
+      { role: 'Man', line: 'Who will we play?' },
+      { role: 'Woman', line: "We will play Mary's team, the Lions." },
+      { role: 'Man', line: 'Great. Will everyone be there?' },
+      { role: 'Woman', line: "Matt won't be there, but everyone else will." },
+      { role: 'Man', line: "Oh, that's too bad. Well, we'll miss him. Where will we play?" },
+      { role: 'Woman', line: "We'll play at the new soccer field by City Café." },
+      { role: 'Man', line: 'Oh, I love that field. We always win there.' },
+      { role: 'Woman', line: "We'll see! Don't get too confident!" },
+      { role: 'Man', line: "Don't worry! I won't!" },
+      { role: 'Woman', line: "We'll also go out for pizza after the game." },
+      { role: 'Man', line: 'That sounds fun.' },
+      { role: 'Woman', line: 'It should be! Especially if we win!' },
+    ],
+    questions: [
+      { q: 'When is the next soccer game?', opts: ['this Friday', 'next Tuesday', 'next weekend', 'tomorrow'], ans: 1 },
+      { q: "Who won't be at the game?", opts: ['Mary', 'the whole team', 'Matt', 'the coach'], ans: 2 },
+      { q: 'What will they do after the game?', opts: ['go home', 'go out for pizza', 'practice more', 'watch another game'], ans: 1 },
+    ]
+  },
+];
+
+const PUZZLES = [
+  {
+    title: 'Conversation 1 — Class',
+    audio: 'A2-04-1-Will-Class.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-1-Will-Class.mp3',
+    bank: ['start','time','next','same','hear','class','still','take'],
+    lines: [
+      { pre: 'Man: How is your French ', word: 'class', post: '?' },
+      { pre: 'Woman: Good, but it will finish ', word: 'next', post: ' week.' },
+      { pre: 'Man: Oh, will you ', word: 'take', post: ' the next course?' },
+      { pre: "Woman: No, I can't. I won't have ", word: 'time', post: '.' },
+      { pre: "Man: I'm surprised to ", word: 'hear', post: ' that. You love that class.' },
+      { pre: 'Woman: I do, but I will ', word: 'start', post: ' a new job next week. The class and my job will be at the ', pre2: '', word2: 'same', post2: ' time.' },
+      { skip: true, pre: "Man: That's too bad!" },
+      { pre: 'Woman: It\u2019s OK. I will ', word: 'still', post: ' study on my own.' },
+    ]
+  },
+  {
+    title: 'Conversation 2 — Picnic',
+    audio: 'A2-04-2-Will-Picnic.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-2-Will-Picnic.mp3',
+    bank: ['make','come','company','go','alone','has','start','alone'],
+    lines: [
+      { pre: 'Man: The ', word: 'company', post: ' picnic is the 18th. Will you be there?' },
+      { pre: 'Woman: Yes, I think I\u2019ll go. What time does it ', word: 'start', post: '?' },
+      { pre: 'Man: It will begin at 12 and will ', word: 'go', post: ' until 5.' },
+      { pre: "Woman: OK, I'll try to ", word: 'make', post: ' it. Will your wife be there?' },
+      { pre: "Man: No, she won't be there this year. She ", word: 'has', post: ' to work.' },
+      { pre: "Woman: Oh, that's too bad. My husband won't ", word: 'come', post: ', either. He\u2019s out of town.' },
+      { pre: 'Man: So, will you come ', word: 'alone', post: '?' },
+      { skip: true, pre: 'Woman: No, I will bring my kids. They love the free food.' },
+    ]
+  },
+  {
+    title: 'Conversation 3 — Summer',
+    audio: 'A2-04-3-Will-Summer.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-3-Will-Summer.mp3',
+    bank: ['will','Where','choice','maybe','stay','How','opened','break'],
+    lines: [
+      { pre: 'Man: Where will you go for the summer ', word: 'break', post: '?' },
+      { pre: 'Woman: I ', word: 'will', post: ' go to the beach with my family.' },
+      { pre: 'Man: That sounds fun. ', word: 'How', post: ' long will you be there?' },
+      { pre: "Woman: We won't stay long, ", word: 'maybe', post: ' two or three days.' },
+      { pre: 'Man: Nice. ', word: 'Where', post: ' will you stay?' },
+      { pre: 'Woman: We will ', word: 'stay', post: ' at the new hotel. It just ', pre2: '', word2: 'opened', post2: '!' },
+      { pre: 'Man: Nice ', word: 'choice', post: ". I hear it's really beautiful." },
+    ]
+  },
+  {
+    title: 'Conversation 4 — Game',
+    audio: 'A2-04-4-Will-Game.mp3',
+    fallback: 'https://elllo.org/Audio/SoundGrammar/A2-Audio4x/A2-04-4-Will-Game.mp3',
+    bank: ['out','miss','confident','team','everyone','game','field','else'],
+    lines: [
+      { pre: "Man: When's our next soccer ", word: 'game', post: '?' },
+      { skip: true, pre: "Woman: It's next Tuesday." },
+      { skip: true, pre: 'Man: Who will we play?' },
+      { pre: "Woman: We will play Mary's ", word: 'team', post: ', the Lions.' },
+      { pre: 'Man: Great. Will ', word: 'everyone', post: ' be there?' },
+      { pre: "Woman: Matt won't be there, but everyone ", word: 'else', post: ' will.' },
+      { pre: "Man: Oh, that's too bad. Well, we'll ", word: 'miss', post: ' him. Where will we play?' },
+      { pre: "Woman: We'll play at the new soccer ", word: 'field', post: ' by City Café.' },
+      { skip: true, pre: 'Man: Oh, I love that field. We always win there.' },
+      { pre: "Woman: We'll see! Don't get too ", word: 'confident', post: '!' },
+      { skip: true, pre: "Man: Don't worry! I won't!" },
+      { pre: "Woman: We'll also go ", word: 'out', post: ' for pizza after the game.' },
+    ]
+  },
+];
+
+const FLASHCARDS = [
+  { en: "I won't have time.", ua: 'У мене не буде часу.' },
+  { en: "That's the spirit!", ua: 'Молодець! Так тримати!' },
+  { en: "I'll try to make it.", ua: 'Я спробую встигнути.' },
+  { en: "She has to work.", ua: 'Їй потрібно працювати.' },
+  { en: 'They love the free food.', ua: 'Вони люблять безкоштовну їжу.' },
+  { en: 'How long will you be there?', ua: 'Скільки ти там будеш?' },
+  { en: 'It just opened!', ua: 'Він щойно відкрився!' },
+  { en: 'Nice choice.', ua: 'Гарний вибір.' },
+  { en: "We'll miss him.", ua: 'Ми будемо сумувати за ним.' },
+  { en: "Don't get too confident!", ua: 'Не будь надто самовпевненим!' },
+  { en: "We'll go out for pizza.", ua: 'Ми підемо поїсти піцу.' },
+  { en: 'Especially if we win!', ua: 'Особливо якщо ми переможемо!' },
+];
+
+const SPEAKING = [
+  {
+    title: 'Діалог 1 з 4',
+    interview: false,
+    lines: [
+      { role: 'Студент А', text: 'Коли закінчиться твій курс англійської?' },
+      { role: 'Студент Б', text: 'Він закінчиться наступного тижня.' },
+      { role: 'Студент А', text: 'Чи запишешся ти на наступний курс?' },
+      { role: 'Студент Б', text: 'Ні, у мене не буде часу.' },
+      { role: 'Студент А', text: 'Чому? Ти ж любиш цей курс!' },
+      { role: 'Студент Б', text: 'Так, але я почну нову роботу.' },
+      { role: 'Студент А', text: 'Що ж, будеш вчитися самостійно?' },
+      { role: 'Студент Б', text: 'Так, обов\u2019язково!' },
+    ]
+  },
+  {
+    title: 'Діалог 2 з 4',
+    interview: false,
+    lines: [
+      { role: 'Студент А', text: 'Чи будеш ти на пікніку наступного тижня?' },
+      { role: 'Студент Б', text: 'Так, я спробую прийти.' },
+      { role: 'Студент А', text: 'О котрій годині це почнеться?' },
+      { role: 'Студент Б', text: 'Почнеться о дванадцятій і триватиме до п\u2019ятої.' },
+      { role: 'Студент А', text: 'Прийдеш сам(а) чи з родиною?' },
+      { role: 'Студент Б', text: 'Я приведу своїх дітей.' },
+      { role: 'Студент А', text: 'Чудово! Там буде багато їжі.' },
+      { role: 'Студент Б', text: 'Сподіваюся, вони з\u2019їдять багато!' },
+    ]
+  },
+  {
+    title: 'Діалог 3 з 4',
+    interview: true,
+    note: '🎤 Студент А перекладає запитання англійською → Студент Б відповідає про себе',
+    lines: [
+      { role: 'Студент А', text: 'Куди ти підеш на літню відпустку?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Скільки днів ти там будеш?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Де ти зупинишся: в готелі чи у друзів?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Чи будеш ти вивчати щось нове наступного року?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Чи матимеш ти достатньо часу для відпочинку?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'З ким ти підеш на пляж чи в подорож?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Що ти зробиш, коли закінчиться твій курс навчання?' },
+      { role: 'Студент Б', blank: true },
+    ]
+  },
+  {
+    title: 'Діалог 4 з 4',
+    interview: true,
+    note: '🎤 Студент А перекладає запитання англійською → Студент Б відповідає про себе',
+    lines: [
+      { role: 'Студент А', text: 'Чи граєш ти у футбол або інший вид спорту?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Коли буде твоя наступна гра чи тренування?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Хто буде в твоїй команді наступного разу?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Чи будеш ти впевнений(а) перед грою?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Що ти зробиш після перемоги в грі?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Чи піде твоя родина дивитися на твою гру?' },
+      { role: 'Студент Б', blank: true },
+      { role: 'Студент А', text: 'Чи з\u2019їсте ви щось разом після гри?' },
+      { role: 'Студент Б', blank: true },
+    ]
+  },
+];
+
+const STEPS = [
+  { icon: '🎬', label: 'Watch' },
+  { icon: '📚', label: 'Слова' },
+  { icon: '🎧', label: 'Розмова 1' },
+  { icon: '🎧', label: 'Розмова 2' },
+  { icon: '🎧', label: 'Розмова 3' },
+  { icon: '🎧', label: 'Розмова 4' },
+  { icon: '🧩', label: 'Пазл' },
+  { icon: '📖', label: 'Читання' },
+  { icon: '🃏', label: 'Картки' },
+  { icon: '🗣️', label: 'Говоримо' },
+];
+
+/* ============ STATE ============ */
+const correctMap = {};
+const quizAnswered = {};
+const quizScores = { q1: null, q2: null, q3: null, q4: null };
+const puzzleScores = { p1: null, p2: null, p3: null, p4: null };
+const carState = { r: 0, sp: 0 };
+
+/* ============ STEPPER ============ */
+function buildStepper() {
+  const el = document.getElementById('stepper');
+  let html = '';
+  STEPS.forEach((s, i) => {
+    html += '<button class="step-btn' + (i === 0 ? ' active' : '') + '" id="sbtn-' + i + '" onclick="goStep(' + i + ')">' +
+      '<span class="ic">' + s.icon + '</span><span>' + s.label + '</span></button>';
+  });
+  el.innerHTML = html;
+}
+
+function goStep(i) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + i).classList.add('active');
+  document.getElementById('sbtn-' + i).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function markDone(i) {
+  const b = document.getElementById('sbtn-' + i);
+  if (b) b.classList.add('done');
+}
+
+/* ============ SPEECH ============ */
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.85;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+let listenIdx = 0;
+function listenAll() { listenIdx = 0; speakNext(); }
+function speakNext() {
+  if (listenIdx >= VOCAB.length) return;
+  const u = new SpeechSynthesisUtterance(VOCAB[listenIdx].en);
+  u.lang = 'en-US'; u.rate = 0.82;
+  u.onend = () => { listenIdx++; setTimeout(speakNext, 400); };
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+/* ============ VOCAB GRID ============ */
+function buildVocab() {
+  let grid = '';
+  VOCAB.forEach(v => {
+    grid += '<div class="vocab-item">' +
+      '<div class="vocab-word">' + v.en +
+        '<div class="vocab-ua">' + v.ua + '</div>' +
+      '</div>' +
+      '<button class="speak-btn" onclick="speak(\'' + v.en.replace(/'/g, "\\'") + '\')">🔊</button>' +
+    '</div>';
+  });
+  document.getElementById('vocabGrid').innerHTML = grid;
+}
+
+/* ============ CONVERSATIONS ============ */
+function answerQuiz(qKey, qi, oi, ans, convIdx, btn) {
+  const ck = qKey + '-' + qi;
+  if (quizAnswered[ck]) return;
+  quizAnswered[ck] = true;
+  correctMap[ck] = (oi === ans);
+
+  const allOpts = btn.parentElement.querySelectorAll('.quiz-opt');
+  allOpts.forEach(b => b.disabled = true);
+  if (oi === ans) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    allOpts[ans].classList.add('correct');
+  }
+
+  const total = CONVS[convIdx].questions.length;
+  const allDone = Array.from({ length: total }, (_, k) => !!quizAnswered[qKey + '-' + k]).every(Boolean);
+  if (allDone) {
+    let got = 0;
+    for (let k = 0; k < total; k++) { if (correctMap[qKey + '-' + k]) got++; }
+    quizScores[qKey] = { got, total };
+    updateFab();
+    markDone(convIdx + 2);
+    document.getElementById('qresult-' + convIdx).innerHTML =
+      '<div class="quiz-result ' + (got === total ? 'pass' : 'fail') + '">' +
+      (got === total ? '🏆' : '💪') + ' Результат: ' + got + '/' + total + '</div>';
+  }
+}
+
+function buildConvs() {
+  CONVS.forEach((c, i) => {
+    const qKey = 'q' + (i + 1);
+    let qHtml = '';
+    c.questions.forEach((q, qi) => {
+      let optsHtml = '';
+      q.opts.forEach((o, oi) => {
+        optsHtml += '<button class="quiz-opt" onclick="answerQuiz(\'' + qKey + '\',' + qi + ',' + oi + ',' + q.ans + ',' + i + ',this)">' + o + '</button>';
+      });
+      qHtml += '<div class="quiz-q"><p>' + (qi + 1) + '. ' + q.q + '</p>' + optsHtml + '</div>';
+    });
+
+    const html =
+      '<div class="card">' +
+        '<h2>🎧 ' + c.title + '</h2>' +
+        '<img class="conv-img" src="' + c.img + '" alt="' + c.title + '">' +
+        '<audio controls style="display:block;width:100%;margin-bottom:16px;">' +
+          '<source src="' + c.audio + '">' +
+          '<source src="' + c.fallback + '">' +
+        '</audio>' +
+        qHtml +
+        '<div id="qresult-' + i + '"></div>' +
+      '</div>' +
+      '<div class="card">' +
+        '<div class="nav-row">' +
+          '<button class="nav-btn secondary" onclick="goStep(' + (i + 1) + ')">← Назад</button>' +
+          '<button class="nav-btn" onclick="goStep(' + (i + 3 > 6 ? 6 : i + 3) + ')">Далі →</button>' +
+        '</div>' +
+      '</div>';
+    document.getElementById('panel-' + (i + 2)).innerHTML = html;
+  });
+}
+
+/* ============ PUZZLE ============ */
+function makeSel(word, pi, bank) {
+  const shuffled = [...bank].sort(() => Math.random() - 0.5);
+  let o = '<option value="">—</option>';
+  shuffled.forEach(w => { o += '<option value="' + w + '">' + w + '</option>'; });
+  return '<select class="pzl-sel" data-ans="' + word + '" data-pi="' + pi + '">' + o + '</select>';
+}
+
+function buildPuzzles() {
+  let pHtml = '';
+  PUZZLES.forEach((pz, pi) => {
+    let lh = '';
+    pz.lines.forEach(ln => {
+      if (ln.skip) {
+        lh += '<div class="pzl-line">' + ln.pre + '</div>';
+        return;
+      }
+      lh += '<div class="pzl-line">' + ln.pre + makeSel(ln.word, pi, pz.bank) + (ln.post || '');
+      if (ln.pre2 !== undefined) {
+        lh += ln.pre2 + makeSel(ln.word2, pi, pz.bank) + (ln.post2 || '');
+      }
+      lh += '</div>';
+    });
+
+    pHtml += '<div class="card" id="pzl-card-' + pi + '">' +
+      '<div style="font-weight:800;font-size:16px;margin-bottom:16px;">' + pz.title + '</div>' +
+      lh +
+      '<div class="pzl-audio-label">💡 Якщо треба — прослухай аудіо ще раз — ' + pz.title + '</div>' +
+      '<audio controls style="display:block;width:100%;">' +
+        '<source src="' + pz.audio + '">' +
+        '<source src="' + pz.fallback + '">' +
+      '</audio><br>' +
+      '<button class="check-btn" onclick="checkPuzzle(' + pi + ',\'p' + (pi + 1) + '\')">Перевірити</button>' +
+      '<div class="pzl-score" id="pzl-score-' + pi + '"></div>' +
+    '</div>';
+  });
+  document.getElementById('puzzleContainer').innerHTML = pHtml;
+}
+
+function checkPuzzle(pi, pKey) {
+  const card = document.getElementById('pzl-card-' + pi);
+  const sels = card.querySelectorAll('.pzl-sel[data-pi="' + pi + '"]');
+  let got = 0;
+  sels.forEach(sel => {
+    sel.classList.remove('correct', 'wrong');
+    if (sel.value === sel.dataset.ans) { sel.classList.add('correct'); got++; }
+    else sel.classList.add('wrong');
+  });
+  puzzleScores[pKey] = { got, total: sels.length };
+  updateFab();
+  markDone(6);
+  document.getElementById('pzl-score-' + pi).textContent = 'Результат: ' + got + '/' + sels.length;
+}
+
+/* ============ READING ============ */
+function buildReading() {
+  let rSlides = '';
+  CONVS.forEach((c, i) => {
+    let lines = c.text.map(l =>
+      '<div class="reading-line"><span class="reading-speaker">' + l.role + ':</span> ' + l.line + '</div>'
+    ).join('');
+    rSlides += '<div class="car-slide' + (i === 0 ? ' active' : '') + '" id="rslide-' + i + '">' +
+      '<div style="font-weight:800;margin-bottom:10px;color:var(--violet);">' + c.title + '</div>' +
+      '<div class="reading-conv">' + lines + '</div></div>';
+  });
+  document.getElementById('readingSlides').innerHTML = rSlides;
+}
+
+/* ============ FLASHCARDS ============ */
+function buildFlashcards() {
+  let html = '';
+  FLASHCARDS.forEach((f, i) => {
+    html += '<div class="fc-card" id="fc-' + i + '" onclick="flipCard(' + i + ')">' +
+      '<div class="fc-inner">' +
+        '<div class="fc-front">' + f.en + '<div class="hint">🇬🇧 Перекладай українською</div></div>' +
+        '<div class="fc-back">' + f.ua + '</div>' +
+      '</div></div>';
+  });
+  document.getElementById('fcGrid').innerHTML = html;
+}
+function flipCard(i) { document.getElementById('fc-' + i).classList.toggle('flipped'); markDone(8); }
+let allFlipped = false;
+function flipAll() {
+  allFlipped = !allFlipped;
+  document.querySelectorAll('.fc-card').forEach(c => c.classList.toggle('flipped', allFlipped));
+}
+
+/* ============ SPEAKING ============ */
+function buildSpeaking() {
+  let spSlides = '';
+  SPEAKING.forEach((d, i) => {
+    let lines = '';
+    d.lines.forEach(ln => {
+      if (ln.blank) {
+        lines += '<div class="sp-line"><span class="sp-role">' + ln.role + ':</span>' +
+          '<span class="sp-blank">відповідає про себе англійською...</span></div>';
+      } else {
+        lines += '<div class="sp-line"><span class="sp-role">' + ln.role + ':</span> ' + ln.text + '</div>';
+      }
+    });
+    spSlides += '<div class="car-slide' + (i === 0 ? ' active' : '') + '" id="spslide-' + i + '">' +
+      '<div style="font-weight:800;margin-bottom:10px;color:var(--violet);">' + d.title + '</div>' +
+      (d.note ? '<div class="sp-interview-note">' + d.note + '</div>' : '') +
+      lines + '</div>';
+  });
+  document.getElementById('speakingSlides').innerHTML = spSlides;
+}
+
+/* ============ CAROUSEL ============ */
+function carNav(id, dir) {
+  carState[id] = Math.max(0, Math.min(3, carState[id] + dir));
+  const idx = carState[id];
+  const prefix = id === 'r' ? 'rslide' : 'spslide';
+  document.querySelectorAll('[id^="' + prefix + '"]').forEach((s, i) => s.classList.toggle('active', i === idx));
+  document.getElementById(id + 'prev').disabled = idx === 0;
+  document.getElementById(id + 'next').disabled = idx === 3;
+  document.getElementById(id + 'counter').textContent = (idx + 1) + ' / 4';
+  if (id === 'r' && idx === 3) markDone(7);
+  if (id === 'sp' && idx === 3) markDone(9);
+}
+
+/* ============ RESULTS ============ */
+function updateFab() {
+  let g = 0, t = 0;
+  Object.values(quizScores).forEach(s => { if (s) { g += s.got; t += s.total; } });
+  Object.values(puzzleScores).forEach(s => { if (s) { g += s.got; t += s.total; } });
+  document.getElementById('fabScore').textContent = g + '/' + t;
+}
+
+function openResults() {
+  let rows = '', g = 0, t = 0;
+  for (let i = 1; i <= 4; i++) {
+    const s = quizScores['q' + i];
+    const v = s ? s.got + '/' + s.total : '—';
+    if (s) { g += s.got; t += s.total; }
+    rows += '<tr><td>Quiz ' + i + '</td><td>' + v + '</td></tr>';
+  }
+  for (let i = 1; i <= 4; i++) {
+    const s = puzzleScores['p' + i];
+    const v = s ? s.got + '/' + s.total : '—';
+    if (s) { g += s.got; t += s.total; }
+    rows += '<tr><td>Puzzle ' + i + '</td><td>' + v + '</td></tr>';
+  }
+  document.getElementById('resultsBody').innerHTML = rows;
+  const pct = t > 0 ? Math.round(g / t * 100) : 0;
+  const medal = pct >= 90 ? '🏆' : pct >= 70 ? '🌟' : pct >= 50 ? '👍' : '💪';
+  document.getElementById('resultsTotal').textContent = medal + ' ' + g + '/' + t + ' — ' + pct + '%';
+
+  let txt = 'A2-04 Will / Future Tense\n' + '─'.repeat(28) + '\n';
+  for (let i = 1; i <= 4; i++) { const s = quizScores['q' + i]; txt += 'Quiz ' + i + ': ' + (s ? s.got + '/' + s.total : '—') + '\n'; }
+  for (let i = 1; i <= 4; i++) { const s = puzzleScores['p' + i]; txt += 'Puzzle ' + i + ': ' + (s ? s.got + '/' + s.total : '—') + '\n'; }
+  txt += '─'.repeat(28) + '\nЗагалом: ' + g + '/' + t + ' (' + pct + '%) ' + medal;
+  document.getElementById('resultsText').value = txt;
+  document.getElementById('resultsModal').classList.add('open');
+}
+function closeResults() { document.getElementById('resultsModal').classList.remove('open'); }
+function copyResults() {
+  const ta = document.getElementById('resultsText');
+  ta.select();
+  document.execCommand('copy');
+}
+
+/* ============ INIT ============ */
+buildStepper();
+buildVocab();
+buildConvs();
+buildPuzzles();
+buildReading();
+buildFlashcards();
+buildSpeaking();
+</script>
+</body>
+</html>
